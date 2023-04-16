@@ -3,6 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
+	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
@@ -26,20 +27,19 @@ if hangman is complete -> game over , you lose
 
 */
 
-var Dictionary = []string{
-	"Zombie",
-	"Gopher",
-	"Kenya",
-	"Indonesia",
-	"Nazism",
-	"Apple",
-	"Programming",
-}
 var inputReader = bufio.NewReader(os.Stdin)
 
 func main() {
+	fData, err := ioutil.ReadFile("dict")
+	if err != nil {
+		fmt.Println("Err is ", err)
+		// print any error
+	}
+	strbuffer := string(fData) // convert read in file to a string
 
-	targetWord := getRandomWord()
+	dictionary := strings.Split(strbuffer, ",")
+
+	targetWord := getRandomWord(dictionary)
 	guessedLetters := initializeGuessedWords(targetWord)
 	hangmanState := 0
 
@@ -74,9 +74,9 @@ func initializeGuessedWords(targetWord string) map[rune]bool {
 	return guessedLetters
 }
 
-func getRandomWord() string {
+func getRandomWord(dictionary []string) string {
 	rand.NewSource(time.Now().UnixNano())
-	return Dictionary[rand.Intn(len(Dictionary))]
+	return strings.TrimSpace(dictionary[rand.Intn(len(dictionary))])
 }
 
 func printGameState(targetWord string, guessedLetters map[rune]bool, hangmanState int) {
@@ -107,7 +107,7 @@ func getWordGuessingProgress(targetWord string, guessedLetters map[rune]bool) st
 }
 
 func getHangman(hangmanState int) string {
-	file := fmt.Sprintf("%s%d", "pkg/states/hangman", hangmanState)
+	file := fmt.Sprintf("%s%d", "states/hangman", hangmanState)
 
 	data, err := os.ReadFile(file)
 	if err != nil {
