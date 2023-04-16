@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"math/rand"
 	"os"
@@ -30,7 +29,7 @@ if hangman is complete -> game over , you lose
 var inputReader = bufio.NewReader(os.Stdin)
 
 func main() {
-	fData, err := ioutil.ReadFile("dict")
+	fData, err := os.ReadFile("dict")
 	if err != nil {
 		fmt.Println("Err is ", err)
 		// print any error
