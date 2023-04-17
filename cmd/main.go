@@ -60,7 +60,7 @@ func main() {
 	if isWordGuessed(targetWord, guessedLetters) {
 		fmt.Println("Congratulations you guessed the word correctly! ...")
 	} else {
-		fmt.Println("Game Over 2! ...")
+		fmt.Println("Game Over! You failed to guess the word correctly ...")
 	}
 
 }
@@ -142,5 +142,5 @@ func isWordGuessed(targetWord string, guessedLetter map[rune]bool) bool {
 
 func isHangmanComplete(hangmanState int) bool {
 
-	return hangmanState >= 9
+	return hangmanState > 9
 }
